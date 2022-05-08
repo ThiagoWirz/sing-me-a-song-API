@@ -99,6 +99,8 @@ describe("GET recommendantions by id", () => {
 });
 
 describe("GET random recommendation", () => {
+  beforeEach(truncateRecommendations);
+  afterAll(disconect);
   it("should return 200 and a recommendation", async () => {
     await recommendationsManyFactory();
 
@@ -106,6 +108,22 @@ describe("GET random recommendation", () => {
 
     expect(response.status).toEqual(200);
     expect(response.body).toHaveProperty("id");
+  });
+});
+
+describe("GET recommendations by amount", () => {
+  beforeEach(truncateRecommendations);
+  afterAll(disconect);
+  it("should return 200 and 3 recommendantions ordered by score given 3 at params", async () => {
+    await recommendationsManyFactory();
+
+    const response = await supertest(app).get("/recommendations/top/3");
+
+    expect(response.status).toEqual(200);
+    expect(response.body.length).toEqual(3);
+    expect(response.body[0].score).toBeGreaterThanOrEqual(
+      response.body[1].score
+    );
   });
 });
 async function truncateRecommendations() {
