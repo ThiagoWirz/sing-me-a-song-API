@@ -68,6 +68,20 @@ describe("DOWNVOTE recommendations/downvote POST", () => {
   });
 });
 
+describe("GET recommendations", () => {
+  beforeEach(truncateRecommendations);
+  afterAll(disconect);
+  it("should return 200 and an array with the recommendations", async () => {
+    const body = recommendationBodyFactory();
+    await recommendantionFactory(body);
+
+    const response = await supertest(app).get("/recommendations");
+
+    expect(response.status).toEqual(200);
+    expect(response.body.length).toEqual(1);
+  });
+});
+
 async function truncateRecommendations() {
   await prisma.$executeRaw`TRUNCATE TABLE recommendations;`;
 }
