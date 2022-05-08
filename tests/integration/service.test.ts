@@ -82,6 +82,22 @@ describe("GET recommendations", () => {
   });
 });
 
+describe("GET recommendantions by id", () => {
+  beforeEach(truncateRecommendations);
+  afterAll(disconect);
+  it("should return 200 and a recommendation given a id", async () => {
+    const body = recommendationBodyFactory();
+    const insertedRecommendation = await recommendantionFactory(body);
+
+    const response = await supertest(app).get(
+      `/recommendations/${insertedRecommendation.id}`
+    );
+
+    expect(response.status).toEqual(200);
+    expect(response.body.id).toEqual(insertedRecommendation.id);
+  });
+});
+
 async function truncateRecommendations() {
   await prisma.$executeRaw`TRUNCATE TABLE recommendations;`;
 }
