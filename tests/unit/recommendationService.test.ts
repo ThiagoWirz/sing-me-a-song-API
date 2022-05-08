@@ -50,5 +50,12 @@ describe("Recommendation Service Unit Test", () => {
       await recommendationService.downvote(1);
       expect(removeTest).toBeCalledTimes(1);
     });
+    it("should throw a not found error if no recommendation is found", () => {
+      jest.spyOn(recommendationRepository, "find").mockReturnValue(null);
+
+      return expect(recommendationService.downvote(3)).rejects.toEqual(
+        notFoundError()
+      );
+    });
   });
 });
