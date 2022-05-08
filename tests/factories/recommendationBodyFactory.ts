@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { CreateRecommendationData } from "../../src/services/recommendationsService.js";
 
-export default function recommedationBodyFactory() {
+export default function recommedationBodyFactory(): CreateRecommendationData {
   const body = {
     name: faker.word.noun(),
     youtubeLink:
