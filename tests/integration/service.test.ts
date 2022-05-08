@@ -46,6 +46,28 @@ describe("UPVOTE recommendations/upvote POST", () => {
   });
 });
 
+describe("DOWNVOTE recommendations/downvote POST", () => {
+  beforeEach(truncateRecommendations);
+  afterAll(disconect);
+  it("should return 200 and score be -1", async () => {
+    const body = recommendationBodyFactory();
+    const recommendation = await recommendantionFactory(body);
+
+    const response = await supertest(app)
+      .post(`/recommendations/${recommendation.id}/downvote`)
+      .send();
+
+    const result = await prisma.recommendation.findUnique({
+      where: {
+        id: recommendation.id,
+      },
+    });
+
+    expect(response.status).toEqual(200);
+    expect(result.score).toEqual(-1);
+  });
+});
+
 async function truncateRecommendations() {
   await prisma.$executeRaw`TRUNCATE TABLE recommendations;`;
 }
