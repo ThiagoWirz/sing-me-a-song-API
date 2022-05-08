@@ -27,4 +27,28 @@ describe("Recommendation Service Unit Test", () => {
       );
     });
   });
+  describe("Downvote", () => {
+    it("should delete the recommendation if score is lower than -5", async () => {
+      const recomedationTest = {
+        id: 1,
+        name: "Miajuda",
+        youtubeLink: "nsei",
+        score: -5,
+      };
+
+      jest
+        .spyOn(recommendationRepository, "find")
+        .mockResolvedValue(recomedationTest);
+      jest
+        .spyOn(recommendationRepository, "updateScore")
+        .mockResolvedValue({ ...recomedationTest, score: -6 });
+
+      const removeTest = jest
+        .spyOn(recommendationRepository, "remove")
+        .mockResolvedValue(null);
+
+      await recommendationService.downvote(1);
+      expect(removeTest).toBeCalledTimes(1);
+    });
+  });
 });
