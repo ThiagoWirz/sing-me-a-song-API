@@ -58,4 +58,14 @@ describe("Recommendation Service Unit Test", () => {
       );
     });
   });
+
+  describe("Get", () => {
+    it("should throw a not found error when getByFilter not found any recommendations", () => {
+      jest.spyOn(recommendationRepository, "findAll").mockResolvedValue([]);
+
+      return expect(recommendationService.getRandom()).rejects.toEqual(
+        notFoundError()
+      );
+    });
+  });
 });
