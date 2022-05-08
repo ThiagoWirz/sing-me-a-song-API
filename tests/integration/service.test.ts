@@ -1,9 +1,9 @@
 import supertest from "supertest";
 import app from "../../src/app.js";
 import { prisma } from "../../src/database.js";
-import { faker } from "@faker-js/faker";
 import recommendationBodyFactory from "../factories/recommendationBodyFactory.js";
 import recommendantionFactory from "../factories/recommendationFactory.js";
+import recommendationsManyFactory from "../factories/recommendationsManyFactory.js";
 
 describe("POST recomedations", () => {
   beforeEach(truncateRecommendations);
@@ -98,6 +98,16 @@ describe("GET recommendantions by id", () => {
   });
 });
 
+describe("GET random recommendation", () => {
+  it("should return 200 and a recommendation", async () => {
+    await recommendationsManyFactory();
+
+    const response = await supertest(app).get("/recommendations/random");
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toHaveProperty("id");
+  });
+});
 async function truncateRecommendations() {
   await prisma.$executeRaw`TRUNCATE TABLE recommendations;`;
 }
