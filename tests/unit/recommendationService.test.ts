@@ -17,4 +17,14 @@ describe("Recommendation Service Unit Test", () => {
       ).rejects.toEqual(conflictError("Recommendations names must be unique"));
     });
   });
+
+  describe("Upvote", () => {
+    it("should throw a not found error if no recommendation is found", () => {
+      jest.spyOn(recommendationRepository, "find").mockReturnValue(null);
+
+      return expect(recommendationService.upvote(3)).rejects.toEqual(
+        notFoundError()
+      );
+    });
+  });
 });
