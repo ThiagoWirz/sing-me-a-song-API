@@ -2,10 +2,10 @@
   "name": "typescript-back-template",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "test": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest "
   },
   "keywords": [],
   "author": "",
@@ -37,5 +37,17 @@
     "express-async-errors": "^3.1.1",
     "joi": "^17.4.1",
     "react-player": "^2.10.0"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThiagoWirz/sing-me-a-song-API.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ThiagoWirz/sing-me-a-song-API/issues"
+  },
+  "homepage": "https://github.com/ThiagoWirz/sing-me-a-song-API#readme",
+  "description": ""
 }
