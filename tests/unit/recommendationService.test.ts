@@ -60,7 +60,16 @@ describe("Recommendation Service Unit Test", () => {
   });
 
   describe("Get", () => {
-    it("should throw a not found error when getByFilter not found any recommendations", () => {
+    it("should throw a not found error when getByFilter not found any recommendations with random lower than 0.7", () => {
+      jest.spyOn(Math, "random").mockReturnValue(0.5);
+      jest.spyOn(recommendationRepository, "findAll").mockResolvedValue([]);
+
+      return expect(recommendationService.getRandom()).rejects.toEqual(
+        notFoundError()
+      );
+    });
+    it("should throw a not found error when getByFilter not found any recommendations with random greater than 0.7", () => {
+      jest.spyOn(Math, "random").mockReturnValue(0.8);
       jest.spyOn(recommendationRepository, "findAll").mockResolvedValue([]);
 
       return expect(recommendationService.getRandom()).rejects.toEqual(
